@@ -8,6 +8,12 @@ conf_dir = os.path.join(base_dir, "Conf")
 # 文件下载路径
 export_dir = os.path.join(base_dir, "Conf", "export")
 
+list__dir = [driver_dir, export_dir]
+for dir_path in list__dir:
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
 if __name__ == '__main__':
     print(base_dir)
     print(driver_dir)
+    print(export_dir)
