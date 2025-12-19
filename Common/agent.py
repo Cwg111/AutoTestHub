@@ -1,10 +1,4 @@
-# @Create Date: 2023/11/6
-# @Project: web
-# @Author: ganlu
-
 import os
-import time
-
 from webdriver_manager.core.utils import get_browser_version_from_os
 from selenium import webdriver
 from Common.path import driver_dir, export_dir
@@ -25,10 +19,10 @@ def driver_version():
     browser_driver = browser_version.split(".")[0] + "chromedriver.exe"
     if browser_driver in os.listdir(driver_dir):
         driver_path = os.path.join(driver_dir, browser_driver)
-        print("当前Chrome浏览器驱动版本：{}".format(driver_path))
+        print(f"当前Chrome浏览器驱动版本：{driver_path}")
         return driver_path
     else:
-        raise print("本地chrome驱动版本：{}，未找到指定的驱动版本！！！".format(browser_version))
+        raise print(f"本地chrome驱动版本：{browser_version}，未找到指定的驱动版本！！！")
 
 
 def options():
@@ -38,12 +32,8 @@ def options():
     """
     # 启动浏览器添加设置，通过ChromeOptions类
     option = webdriver.ChromeOptions()
-    # 76以下版本，取消chrome受自动控制提示
-    # option.add_argument("--disable-infobars")
-    # 76以上版本，取消chrome受自动控制提示
+    # 取消chrome受自动控制提示
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
-    # 无痕模式
-    # option.add_argument("--incognito")
     # 驱动器下载文件路径配置
     option.add_experimental_option('prefs', {
         'profile.default_content_settings.popups': 0,  # 禁止弹出窗口
@@ -58,4 +48,4 @@ def options():
 
 
 if __name__ == '__main__':
-    pass
+    print(driver_version())

@@ -1,13 +1,13 @@
-# @Create Date: 2023/10/24
-# @Author: ganlu
 import pymysql
 import psycopg2
+from pymysql.cursors import DictCursor
 
 
 class HandelDb:
     """
     封装数据库连接
     """
+
     def __init__(self, host, port, user, pwd, log, database=None, types="mysql"):
         """
         连接数据库，创建游标
@@ -21,7 +21,7 @@ class HandelDb:
         :param database: 库名称
         :return:
         """
-        # 连接pg数据库
+        # 连接pg数据库，也就是PostgreSQL数据库，要指定database参数
         if types == "pg":
             self.conn = psycopg2.connect(
                 host=host,
@@ -37,7 +37,7 @@ class HandelDb:
                 user=user,
                 password=pwd,
                 charset='utf8',
-                cursorclass=pymysql.cursors.DictCursor
+                cursorclass=DictCursor  # 查询结果用字典格式表示
             )
         self.logger = log
         # 创建游标
@@ -47,7 +47,7 @@ class HandelDb:
         """
         获取一条数据
         :param sql: sql语句
-        :return:
+        :return: 返回类型是字典
         """
         self.conn.commit()  # 同步数据库
         self.cur.execute(sql)
@@ -56,8 +56,9 @@ class HandelDb:
     def select_some_data(self, sql, num):
         """
         获取几条数据
+        :param num: 要返回结果数量
         :param sql:
-        :return:
+        :return: 返回类型是列表嵌套字典
         """
         self.conn.commit()
         self.cur.execute(sql)
@@ -79,7 +80,7 @@ class HandelDb:
         :param sql:
         :return:
         """
-        self.logger.info("sql语句：{}".format(sql))
+        self.logger.info(f"sql语句：{sql}")
         self.conn.commit()
         self.cur.execute(sql)
         return self.cur.rowcount
@@ -90,7 +91,7 @@ class HandelDb:
         :param sql:
         :return:
         """
-        self.logger.info("sql语句：{}".format(sql))
+        self.logger.info(f"sql语句：{sql}")
         self.cur.execute(sql)
         self.conn.commit()
 

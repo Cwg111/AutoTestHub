@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :home_page_locators.py
-# @Time      :2025/10/31 10:34
-# @Author    :ChenWenGang
 from selenium.webdriver.common.by import By
 
 

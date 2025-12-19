@@ -1,6 +1,3 @@
-# @Create Date: 2023/11/6
-# @Project: web
-# @Author: ganlu
 import os
 from configparser import ConfigParser
 from Common.path import conf_dir
@@ -23,7 +20,6 @@ class HandleConfig(ConfigParser):
 dir_con = os.path.join(conf_dir, "web.ini")
 conf = HandleConfig(dir_con)
 
-
 if __name__ == '__main__':
-    conf.get("log", "name_cii")
-    print(conf.get("log", "name_cii"))
+    print(conf.get("log", "name_pms"))
+    print(conf.get("taiga", "host"))

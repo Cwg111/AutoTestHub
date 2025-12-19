@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :home_datas.py
-# @Time      :2025/11/20 17:28
-# @Author    :ChenWenGang
 import os.path
 
 base_url = "http://cppe-pm/#/"

@@ -1,0 +1,16 @@
+# 忽略PyCharm的配置文件
+.idea/
+*.iml
+
+# 忽略Chrome驱动目录（驱动文件无需提交到Git）
+Conf/chromedriver/
+
+# 忽略Python编译缓存
+__pycache__/
+
+# 忽略所有的输出目录（测试报告、日志等）
+/**/Outputs/
+
+# 可补充其他需要忽略的内容（比如日志文件、临时文件）
+*.log
+*.tmp

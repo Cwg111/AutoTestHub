@@ -1,8 +1,3 @@
-# @Create Date: 2025/6/18 星期三
-# @Author: ganlu
-"""
-全局测试数据
-"""
 import os
 
 # 成都测试环境地址

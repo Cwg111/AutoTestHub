@@ -1,9 +1,6 @@
-# @Create Date: 2023/12/19
-# @Author: ganlu
 import datetime
 import os
 import pywinauto
-
 from Common.config import conf
 from Common.path import export_dir
 from pywinauto.keyboard import send_keys
@@ -47,13 +44,13 @@ def clear_img(screenshot_dir, is_all=None):
 
 def check_download_file(file_name):
     """
-    下载文件校验
+    下载文件校验，跟存放下载文件夹中的第一个文件
     :param file_name: 文件名称
     :return:
     """
-    print("已下载的文件名称：{}".format(os.listdir(export_dir)))
+    print(f"已下载的文件名称：{os.listdir(export_dir)}")
     try:
-        print("校验的文件名称：{}".format(file_name))
+        print(f"校验的文件名称：{file_name}")
         assert file_name in os.listdir(export_dir)[0]
     except:
         return False
@@ -65,12 +62,12 @@ def check_download_file(file_name):
 
 def clear_download_file():
     """
-    清空已下载的文件
+    清空已下载的所有文件
     :return:
     """
     for file in os.listdir(export_dir):
         if len(file) > 0:
-            os.remove(os.path.join(export_dir, os.listdir(export_dir)[0]))
+            os.remove(os.path.join(export_dir, file))
 
 
 def get_num(data):
@@ -117,5 +114,4 @@ def file_upload(file_path, file_name):
     # 选中文件名输入框，输入文件名
     dlg["文件名(&N):Edit"].type_keys(file_name)
     # 点击文件上传框打开按钮
-    # dlg["打开(&O)"].click()
     dlg["打开(&O)"].click_input()

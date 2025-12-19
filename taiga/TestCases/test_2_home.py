@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :test_2_home.py
-# @Time      :2025/11/21 14:02
-# @Author    :ChenWenGang
 import time
 import pytest
 from pms.TestCases.conftest import login_page

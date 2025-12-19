@@ -1,5 +1,3 @@
-# @Create Date: 2025/6/18
-# @Author: ganlu
 from selenium.webdriver.common.by import By
 
 

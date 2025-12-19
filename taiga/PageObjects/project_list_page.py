@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :project_list_page.py
-# @Time      :2025/11/21 14:06
-# @Author    :ChenWenGang
 from Common.basepage import BasePage
 from pms.PageLocators.project_list_locators import ProjectListLocators as loc
 

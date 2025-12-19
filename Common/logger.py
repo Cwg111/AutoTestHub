@@ -1,6 +1,3 @@
-# @Create Date: 2023/11/14
-# @Project: web
-# @Author: ganlu
 import logging
 
 
@@ -28,15 +25,3 @@ class MyLogger(logging.Logger):
             handle2 = logging.FileHandler(file, encoding="utf-8", mode='w')
             handle2.setFormatter(formatter)
             self.addHandler(handle2)
-
-
-# if conf.getboolean("log", "file_ok"):
-#     file_name = os.path.join(logs_dir, conf.get("log", "file_name_cii"))
-#     now = str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-#     logger = MyLogger(conf, "name_cii", file_name + "-{}.log".format(now))
-# else:
-#     file_name = None
-#     logger = MyLogger(conf, "name_cii", file_name)
-#
-# if __name__ == '__main__':
-#     logger.warning("警告警告！！！！！")

@@ -1,5 +1,3 @@
-# @Create Date: 2025/6/18
-# @Author: ganlu
 import time
 
 import pytest

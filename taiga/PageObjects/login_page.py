@@ -1,6 +1,3 @@
-# @Create Date: 2025/6/18
-# @Author: ganlu
-
 from Common.basepage import BasePage
 from Common.verify_code import get_data_url_code
 from pms.PageLocators.login_page_locators import LoginPageLocators as loc

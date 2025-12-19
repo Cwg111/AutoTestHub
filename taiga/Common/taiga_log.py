@@ -1,11 +1,8 @@
-# @Create Date: 2025/6/18
-# @Author: ganlu
 import os
 import datetime
-
 from Common.logger import MyLogger
 from Common.config import conf
-from pms.Common.pms_path import logs_dir
+from taiga.Common.taiga_path import logs_dir
 
 if conf.getboolean("log", "file_ok"):
     file_name = os.path.join(logs_dir, conf.get("log", "file_name_pms"))
