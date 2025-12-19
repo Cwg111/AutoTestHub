@@ -24,6 +24,8 @@ python common/path.py
 
 python taiga/Common/taiga_path.py
 
+下载chrome对应版本的chromedriver到Conf/chromedriver文件夹下
+
 三、快速开始
 完成上述部署后，即可运行自动化测试脚本（以项目主入口为例）：
 
