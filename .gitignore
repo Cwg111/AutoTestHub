@@ -8,14 +8,14 @@ Conf/chromedriver/**
 # 忽略Python编译缓存
 __pycache__/
 
-# 保留Outputs下的allure文件夹，仅忽略其内部内容
-Outputs/allure/**
-# 保留Outputs下的logs文件夹，仅忽略其内部内容
-Outputs/logs/**
-# 保留Outputs下的screenshots文件夹，仅忽略其内部内容
-Outputs/screenshots/**
-# 保留Outputs下的verify_code文件夹，仅忽略其内部内容
-Outputs/verify_code/**
+# 保留所有文件夹下的Outputs下的allure文件夹，仅忽略其内部内容
+**/Outputs/allure/**
+# 保留所有文件夹下的Outputs下的logs文件夹，仅忽略其内部内容
+**/Outputs/logs/**
+# 保留所有文件夹下的Outputs下的screenshots文件夹，仅忽略其内部内容
+**/Outputs/screenshots/**
+# 保留所有文件夹下的Outputs下的verify_code文件夹，仅忽略其内部内容
+**/Outputs/verify_code/**
 
 # 可补充其他需要忽略的内容（比如日志文件、临时文件）
 *.log

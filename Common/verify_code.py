@@ -32,7 +32,7 @@ def __save_data_url_image(data_url: str, picture_dir):
         # 媒体类型分割出扩展名（如image/png → png）
         file_extension = mime_type.split("/")[-1]
         # 用当前时间戳命名（精确到秒），避免文件名重复
-        filename = f"{datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')}.{file_extension}"
+        filename = f"{datetime.datetime.now().strftime('%Y-%m-%d%H-%M-%S')}.{file_extension}"
         # 步骤6：拼接保存路径，写入文件
         save_path = os.path.join(picture_dir, filename)
         with open(save_path, "wb") as f:  # 二进制写模式保存图片

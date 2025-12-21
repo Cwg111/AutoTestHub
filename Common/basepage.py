@@ -64,7 +64,7 @@ class BasePage:
         """
         self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 不可见。")
         try:
-            time.sleep(5)
+            # time.sleep(5)
             WebDriverWait(self.driver, timeout, poll_frequency).until_not(EC.visibility_of_element_located(locator))
         except:
             self.logger.exception("等待元素不可见失败！")

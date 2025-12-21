@@ -13,4 +13,5 @@ db = HandelDb(conf.get("taiga", "host"),
 
 if __name__ == '__main__':
     test_sql="select id,username,is_active from users_user where username='test_userA';"
-    print(db.select_one_data(test_sql))
+    logger.info(f"sql语句：{test_sql}")
+    logger.info(f"查询结果：{db.select_one_data(test_sql)}")
