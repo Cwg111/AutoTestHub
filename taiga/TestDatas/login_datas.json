@@ -1,0 +1,24 @@
+{
+  "login_admin_success": {
+    "username": "admin",
+    "password": "Admin@123456"
+  },
+  "login_error_input": [
+    {
+      "username": "admin",
+      "password": "Admin@1234567",
+      "message": "username/email or password are incorrect"
+    },
+    {
+      "username": "admin1",
+      "password": "Admin@123456",
+      "message": "username/email or password are incorrect"
+    }
+  ],
+  "login_no_input": {
+    "username": "",
+    "password": "Admin@123456",
+    "message": "请填写此字段。"
+  }
+}
+

@@ -4,6 +4,7 @@ import pywinauto
 from Common.config import conf
 from Common.path import export_dir
 from pywinauto.keyboard import send_keys
+import json
 
 """
 日志图片输出限制
@@ -115,3 +116,14 @@ def file_upload(file_path, file_name):
     dlg["文件名(&N):Edit"].type_keys(file_name)
     # 点击文件上传框打开按钮
     dlg["打开(&O)"].click_input()
+
+
+def read_json_data(file_path):
+    """
+    读取json文件
+    :param file_path: json文件路径
+    :return: JSON文件中的数据（字典/列表格式）
+    """
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
