@@ -30,11 +30,11 @@ def login_page(init_taiga):
     """
     复杂化init_taiga，多一个登录操作，供其他页面（非登录页）使用
     """
-    login_page=LoginPage(logger, screenshot_dir, init_taiga)
+    login_page = LoginPage(logger, screenshot_dir, init_taiga)
     # 执行登录
     login_page.login(default_username, default_password)
     # 简单断言：保证登录成功（前置条件，失败则直接终止）
-    login_page.wait_page_url_change(login_url) # 先等待登录页面加载完成
+    login_page.wait_page_url_change(login_url)  # 先等待登录页面加载完成
     assert login_page.get_page_url() == home_url
     logger.info("登录成功")
     yield init_taiga
@@ -45,8 +45,7 @@ def clean_login_state(init_taiga):
     """
     登录用例专用，轻量清理状态：清cookie+回登录页
     """
-    init_taiga.delete_all_cookies() # 清cookie
-    init_taiga.get(login_url) # 返回登录页面
+    init_taiga.delete_all_cookies()  # 清cookie
+    init_taiga.get(login_url)  # 返回登录页面
     logger.info("清理登录状态成功")
     yield init_taiga
-

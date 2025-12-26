@@ -9,7 +9,6 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class BasePage:
-
     def __init__(self, logger, screenshot_dir, driver: WebDriver):
         """
         :param logger: 日志
@@ -26,7 +25,7 @@ class BasePage:
         :param page_action: 元素操作描述
         :return:
         """
-        cur_time = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())
+        cur_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
         file_path = os.path.join(self.screenshot_dir, f"{cur_time}_{page_action}.png")
         self.driver.save_screenshot(file_path)
         self.logger.info(f"截图保存在：{file_path}")
@@ -43,7 +42,9 @@ class BasePage:
         self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 可见。")
         try:
             start = time.time()
-            WebDriverWait(self.driver, timeout, poll_frequency).until(EC.visibility_of_element_located(locator))
+            WebDriverWait(self.driver, timeout, poll_frequency).until(
+                EC.visibility_of_element_located(locator)
+            )
         except:
             self.logger.exception("等待元素可见失败！")
             # 失败截取当前页面
@@ -53,7 +54,9 @@ class BasePage:
             end = time.time()
             self.logger.info(f"等待耗时为：{end-start}")
 
-    def wait_ele_not_visible(self, locator, page_action, timeout=20, poll_frequency=0.5):
+    def wait_ele_not_visible(
+        self, locator, page_action, timeout=20, poll_frequency=0.5
+    ):
         """
         显性等待元素不可见
         :param locator: 元素定位
@@ -65,13 +68,17 @@ class BasePage:
         self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 不可见。")
         try:
             # time.sleep(5)
-            WebDriverWait(self.driver, timeout, poll_frequency).until_not(EC.visibility_of_element_located(locator))
+            WebDriverWait(self.driver, timeout, poll_frequency).until_not(
+                EC.visibility_of_element_located(locator)
+            )
         except:
             self.logger.exception("等待元素不可见失败！")
             self.get_page_img(page_action + "不可见失败")
             raise
 
-    def wait_page_contains_element(self, locator, page_action, timeout=20, poll_frequency=0.5):
+    def wait_page_contains_element(
+        self, locator, page_action, timeout=20, poll_frequency=0.5
+    ):
         """
         显性等待元素存在
         :param locator: 元素定位
@@ -83,7 +90,9 @@ class BasePage:
         self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 存在。")
         try:
             start = time.time()
-            WebDriverWait(self.driver, timeout, poll_frequency).until(EC.presence_of_element_located(locator))
+            WebDriverWait(self.driver, timeout, poll_frequency).until(
+                EC.presence_of_element_located(locator)
+            )
         except:
             self.logger.exception("等待元素存在失败！")
             self.get_page_img(page_action)
@@ -104,7 +113,9 @@ class BasePage:
         self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 存在。")
         try:
             start = time.time()
-            WebDriverWait(self.driver, timeout, poll_frequency).until(EC.element_to_be_clickable(locator))
+            WebDriverWait(self.driver, timeout, poll_frequency).until(
+                EC.element_to_be_clickable(locator)
+            )
         except:
             self.logger.exception("等待元素可点击失败！")
             self.get_page_img(page_action)
@@ -113,7 +124,9 @@ class BasePage:
             end = time.time()
             self.logger.info(f"等待耗时为：{end - start}")
 
-    def get_element(self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def get_element(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+    ):
         """
         先等待元素可见、存在、可点击
         查找单个元素
@@ -126,7 +139,9 @@ class BasePage:
         """
         if wait == "presence":
             # 元素存在
-            self.wait_page_contains_element(locator, page_action, timeout, poll_frequency)
+            self.wait_page_contains_element(
+                locator, page_action, timeout, poll_frequency
+            )
         elif wait == "visibility":
             # 元素可见
             self.wait_ele_visible(locator, page_action, timeout, poll_frequency)
@@ -143,7 +158,9 @@ class BasePage:
         else:
             return ele
 
-    def click_element(self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def click_element(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+    ):
         """
         点击元素操作
         默认元素可见
@@ -165,7 +182,9 @@ class BasePage:
             self.get_page_img(page_action)
             raise
 
-    def click_elements(self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def click_elements(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+    ):
         """
         同一个定位能定位到多个元素
         勾选多个元素
@@ -185,7 +204,9 @@ class BasePage:
                 self.logger.info(f"元素{value}，点击失败")
                 raise
 
-    def click_element_selected(self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def click_element_selected(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+    ):
         """
         点击元素后，判断元素是否被选中
         复选框或单选按钮
@@ -198,13 +219,23 @@ class BasePage:
         """
         self.click_element(locator, page_action, timeout, poll_frequency, wait)
         try:
-            WebDriverWait(self.driver, timeout, poll_frequency).until(EC.element_to_be_selected(locator))
+            WebDriverWait(self.driver, timeout, poll_frequency).until(
+                EC.element_to_be_selected(locator)
+            )
         except:
             self.logger.info("元素未被勾选成功")
             self.get_page_img(page_action)
             raise
 
-    def input_text(self, locator, page_action, value, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def input_text(
+        self,
+        locator,
+        page_action,
+        value,
+        timeout=20,
+        poll_frequency=0.5,
+        wait="visibility",
+    ):
         """
         输入元素操作
         :param wait: 默认元素可见
@@ -235,7 +266,9 @@ class BasePage:
         :param poll_frequency: 轮询频率
         :return: txt 返回元素的文本值
         """
-        ele = self.get_element(locator, page_action, timeout, poll_frequency, wait="visibility")
+        ele = self.get_element(
+            locator, page_action, timeout, poll_frequency, wait="visibility"
+        )
         self.logger.info(f"在 {page_action} 操作，获取元素：{locator}的文本")
         try:
             txt = ele.text
@@ -246,7 +279,9 @@ class BasePage:
             self.get_page_img(page_action)
             raise
 
-    def get_attribute(self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5):
+    def get_attribute(
+        self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
+    ):
         """
         获取元素属性
         等待方式为存在
@@ -257,7 +292,9 @@ class BasePage:
         :param poll_frequency: 轮询频率
         :return:
         """
-        ele = self.get_element(locator, page_action, timeout, poll_frequency, wait="visibility")
+        ele = self.get_element(
+            locator, page_action, timeout, poll_frequency, wait="visibility"
+        )
         self.logger.info(f"在 {page_action} 操作，获取元素 {locator} 的属性")
         try:
             value = ele.get_attribute(attr_name)
@@ -267,7 +304,9 @@ class BasePage:
             self.logger.info("获取元素属性失败")
             raise
 
-    def get_attributes(self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5):
+    def get_attributes(
+        self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
+    ):
         """
         获取多个元素属性值
         等待方式为可见
@@ -279,7 +318,9 @@ class BasePage:
         :return: values 返回多个元素的属性值
         """
         values = []
-        eles = self.get_elements(locator, page_action, timeout, poll_frequency, wait="visibility")
+        eles = self.get_elements(
+            locator, page_action, timeout, poll_frequency, wait="visibility"
+        )
         for value in eles:
             self.logger.info(f"在 {page_action} 操作，获取多个 {value} 元素的属性")
             try:
@@ -305,7 +346,8 @@ class BasePage:
         try:
             start = time.time()
             list_eles = WebDriverWait(self.driver, timeout, poll_frequency).until(
-                EC.visibility_of_all_elements_located(locator))
+                EC.visibility_of_all_elements_located(locator)
+            )
         except:
             self.logger.exception("等待多个元素可见失败！")
             self.get_page_img(page_action + "可见失败")
@@ -329,7 +371,8 @@ class BasePage:
         try:
             start = time.time()
             list_eles = WebDriverWait(self.driver, timeout, poll_frequency).until(
-                EC.presence_of_all_elements_located(locator))
+                EC.presence_of_all_elements_located(locator)
+            )
         except:
             self.logger.exception("等待多个元素存在失败！")
             self.get_page_img(page_action + "存在失败")
@@ -339,7 +382,9 @@ class BasePage:
             self.logger.info(f"等待耗时为：{end-start}")
             return list_eles
 
-    def get_elements(self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"):
+    def get_elements(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+    ):
         """
         查找获得多个元素
         一个定位获得多个元素
@@ -396,18 +441,24 @@ class BasePage:
         :param value: 文本框中输入的值
         :return:
         """
-        ele = self.get_element(locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility")
+        ele = self.get_element(
+            locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+        )
         if value:
             # 键盘清除选择框中所有的数据
-            ele.send_keys(Keys.CONTROL, 'a')
+            ele.send_keys(Keys.CONTROL, "a")
             ele.send_keys(Keys.DELETE)
             time.sleep(1)
             ele.send_keys(value, cmd)
-            self.logger.info(f"实际文本框的值：{self.get_attribute(locator, page_action, 'value')}")
+            self.logger.info(
+                f"实际文本框的值：{self.get_attribute(locator, page_action, 'value')}"
+            )
         else:
             ele.send_keys(cmd)
 
-    def action_chains_click(self, locator, page_action, timeout=20, poll_frequency=0.5, click="click"):
+    def action_chains_click(
+        self, locator, page_action, timeout=20, poll_frequency=0.5, click="click"
+    ):
         """
         鼠标点击操作（单击、双击、右键点击）
         默认为单击
@@ -418,7 +469,9 @@ class BasePage:
         :param click: 默认点击行为（单击）
         :return:
         """
-        ele = self.get_element(locator, page_action, timeout, poll_frequency, wait="visibility")
+        ele = self.get_element(
+            locator, page_action, timeout, poll_frequency, wait="visibility"
+        )
         ta = ActionChains(self.driver)
         if click == "click":
             # 鼠标单击操作
@@ -435,7 +488,7 @@ class BasePage:
                 self.get_page_img("鼠标左键双击失败")
                 raise
         else:
-            # 鼠标右键单击操作 
+            # 鼠标右键单击操作
             try:
                 ta.move_to_element(ele).context_click(ele)
             except:
@@ -452,7 +505,9 @@ class BasePage:
         :param poll_frequency: 轮询频率
         :return:
         """
-        ele = self.get_element(locator, page_action, timeout, poll_frequency, wait="visibility")
+        ele = self.get_element(
+            locator, page_action, timeout, poll_frequency, wait="visibility"
+        )
         ta = ActionChains(self.driver)
         ta.move_to_element(ele).perform()
 
@@ -513,3 +568,7 @@ class BasePage:
         ele = self.get_element(locator, page_action)
         ele.send_keys(file_path)
         self.logger.info(f"在 {page_action} 操作，上传文件：{file_path}")
+
+    # shadow dom定位
+    def get_shadow_element(self, shadow_host_locator, page_action):
+        pass
