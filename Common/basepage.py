@@ -52,10 +52,10 @@ class BasePage:
             raise
         else:
             end = time.time()
-            self.logger.info(f"等待耗时为：{end-start}")
+            self.logger.info(f"等待耗时为：{end - start}")
 
     def wait_ele_not_visible(
-        self, locator, page_action, timeout=20, poll_frequency=0.5
+            self, locator, page_action, timeout=20, poll_frequency=0.5
     ):
         """
         显性等待元素不可见
@@ -77,7 +77,7 @@ class BasePage:
             raise
 
     def wait_page_contains_element(
-        self, locator, page_action, timeout=20, poll_frequency=0.5
+            self, locator, page_action, timeout=20, poll_frequency=0.5
     ):
         """
         显性等待元素存在
@@ -125,7 +125,7 @@ class BasePage:
             self.logger.info(f"等待耗时为：{end - start}")
 
     def get_element(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
         """
         先等待元素可见、存在、可点击
@@ -159,7 +159,7 @@ class BasePage:
             return ele
 
     def click_element(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
         """
         点击元素操作
@@ -183,7 +183,7 @@ class BasePage:
             raise
 
     def click_elements(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
         """
         同一个定位能定位到多个元素
@@ -205,7 +205,7 @@ class BasePage:
                 raise
 
     def click_element_selected(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
         """
         点击元素后，判断元素是否被选中
@@ -228,13 +228,13 @@ class BasePage:
             raise
 
     def input_text(
-        self,
-        locator,
-        page_action,
-        value,
-        timeout=20,
-        poll_frequency=0.5,
-        wait="visibility",
+            self,
+            locator,
+            page_action,
+            value,
+            timeout=20,
+            poll_frequency=0.5,
+            wait="visibility",
     ):
         """
         输入元素操作
@@ -280,7 +280,7 @@ class BasePage:
             raise
 
     def get_attribute(
-        self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
+            self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
     ):
         """
         获取元素属性
@@ -305,7 +305,7 @@ class BasePage:
             raise
 
     def get_attributes(
-        self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
+            self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
     ):
         """
         获取多个元素属性值
@@ -354,7 +354,7 @@ class BasePage:
             raise
         else:
             end = time.time()
-            self.logger.info(f"等待耗时为：{end-start}")
+            self.logger.info(f"等待耗时为：{end - start}")
             return list_eles
 
     def wait_eles_presence(self, locator, page_action, timeout=20, poll_frequency=0.5):
@@ -379,11 +379,11 @@ class BasePage:
             raise
         else:
             end = time.time()
-            self.logger.info(f"等待耗时为：{end-start}")
+            self.logger.info(f"等待耗时为：{end - start}")
             return list_eles
 
     def get_elements(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
         """
         查找获得多个元素
@@ -457,7 +457,7 @@ class BasePage:
             ele.send_keys(cmd)
 
     def action_chains_click(
-        self, locator, page_action, timeout=20, poll_frequency=0.5, click="click"
+            self, locator, page_action, timeout=20, poll_frequency=0.5, click="click"
     ):
         """
         鼠标点击操作（单击、双击、右键点击）
@@ -569,6 +569,47 @@ class BasePage:
         ele.send_keys(file_path)
         self.logger.info(f"在 {page_action} 操作，上传文件：{file_path}")
 
-    # shadow dom定位
-    def get_shadow_element(self, shadow_host_locator, page_action):
-        pass
+    # shadow dom定位，能不能用还需要具体验证
+    def get_shadow_element(self, shadow_host_locator, target_locator, page_action, timeout=20, poll_frequency=0.5):
+        """
+        查找Shadow DOM内的元素
+        :param shadow_host_locator: Shadow Host的定位符（如[By.XPATH,"//tg-legacy-loader"]）
+        :param target_locator: Shadow Root内目标元素的定位符（如[By.XPATH, ".//span[contains(text(),'Settings')]"]）
+        :param page_action: 元素操作描述（如"点击Settings按钮"）
+        :param timeout: 超时时间
+        :param poll_frequency: 轮询频率
+        :return: ele,返回Shadow Root内查找到的目标元素
+        """
+        # 第一步先获取shadow host元素
+        self.logger.info(f"在{page_action}操作，开始定位Shadow Host: {shadow_host_locator}")
+        self.wait_page_contains_element(shadow_host_locator, page_action, timeout, poll_frequency)
+        try:
+            shadow_host_ele = self.get_element(shadow_host_locator, page_action, timeout, poll_frequency)
+        except:
+            self.get_page_img("获取Shadow Host元素失败")
+            self.logger.error(page_action)
+            raise
+        #  第二步获取shadow root元素（）
+        self.logger.info("获取Shadow Host的shadow root")
+        try:
+            shadow_root = shadow_host_ele.shadow_root
+            if not shadow_root:
+                raise Exception("获取Shadow Host的shadow root失败")
+        except:
+            self.get_page_img("获取Shadow Host的shadow root失败")
+            self.logger.error(page_action)
+            raise
+        # 第三步查找Shadow root内的元素
+        self.logger.info(f"在{page_action}操作，开始定位Shadow Root内的元素: {target_locator}")
+        start = time.time()
+        try:
+            target_ele = WebDriverWait(self.driver, timeout, poll_frequency).until(
+                lambda driver: shadow_root.find_element(*target_locator))
+        except:
+            self.get_page_img("获取Shadow Root内的元素失败")
+            self.logger.error(page_action)
+            raise
+        else:
+            end=time.time()
+            self.logger.info(f"在{page_action}操作，成功获取Shadow Root内的元素: {target_locator}，耗时{end-start}秒")
+            return target_ele

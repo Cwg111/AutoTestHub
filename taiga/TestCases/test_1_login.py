@@ -24,14 +24,6 @@ class TestLogin:
         """
         self.login_page = LoginPage(logger, screenshot_dir, clean_login_state)
 
-    def _login_and_assert(self):
-        """
-        私有方法，封装登录并断言，减少重复代码
-        :return:
-        """
-        self.login_page.login(self.admin_username, self.admin_password)
-        self.login_page.wait_page_url_change(login_url)
-        assert self.login_page.get_page_url() == home_url
 
     @pytest.mark.parametrize("user_error", login_data["login_error_input"])
     def test_login_error(self, user_error):
@@ -64,7 +56,7 @@ class TestLogin:
         )
 
     def test_login_success(self):
-        self._login_and_assert()
+        self.login_page.login_and_assert(self.admin_username,self.admin_password)
         # 由于再登录成功后输入登录网址跳转不过去，所以必须登出
         self.login_page.logout()
         self.login_page.wait_page_url_change(base_url)
@@ -72,7 +64,7 @@ class TestLogin:
 
     def test_login_out(self):
         # 先登录（自包含）
-        self._login_and_assert()
+        self.login_page.login_and_assert(self.admin_username, self.admin_password)
         # 再登出
         self.login_page.logout()
         self.login_page.wait_page_url_change(base_url)

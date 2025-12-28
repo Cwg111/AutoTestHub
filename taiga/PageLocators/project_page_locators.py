@@ -27,8 +27,21 @@ class HomePageLocators:
     create_project_button = [By.XPATH, "//button[text()='Create Project']"]
     # 点击新建一个项目后项目列表中第一个项目（是根据创建时间从晚到早排序的，最新创建的在第一个），会定位到多个元素，只取第一个
     first_project_locator = [By.XPATH, "//a[@class='list-itemtype-project-image']//img"]
+
+    # 进入项目后左侧的导航栏都在shadow中，所以需要先定位到shadow元素
+    shadow_host=[By.XPATH,"//tg-legacy-loader"]
     # 项目中的设置按钮
-    project_setting_button = [By.XPATH, "//span[text()='Settings']"]
+    project_setting_button = [By.XPATH, ".//span[contains(text(),'Settings')]"]
+
+    # 项目中更改项目名输入框
+    change_project_name_input = [By.XPATH, "//input[@id='project-name']"]
+    # 项目中更改项目名保存按钮
+    change_project_save_button = [By.XPATH, "//button[@title='Save']"]
+    # 项目中删除项目按钮
+    delete_project_button = [By.XPATH, "//a[@class='delete-project']"]
+    # 项目中删除项目确认按钮
+    delete_project_confirm_button = [By.XPATH, "//span[contains(text(),'really sure')]"]
+
 
 
 if __name__ == "__main__":

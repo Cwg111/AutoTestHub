@@ -6,7 +6,7 @@ cases_dir = os.path.join(base_dir, "TestCases")
 datas_dir = os.path.join(base_dir, "TestDatas")
 reports_dir = os.path.join(base_dir, r"Outputs\allure")
 logs_dir = os.path.join(base_dir, r"Outputs\logs")
-screenshot_dir = os.path.join(base_dir, "Outputs", "screenshots")
+screenshot_dir = os.path.join(base_dir, "Outputs", "screenshots")   
 verify_code_dir = os.path.join(base_dir, "Outputs", "verify_code")
 test_data_dir = os.path.join(base_dir, "TestDatas")  # 测试数据目录
 login_data_dir = os.path.join(test_data_dir, "login_datas.json")  # 登录数据文件
@@ -19,7 +19,7 @@ for dir_path in list_dir:
 
 # --------环境URL配置----------
 # 初始接口地址
-base_url = "http://192.168.146.128:9000/"
+base_url = "http://192.168.88.130:9000/"
 
 # 发现页面
 discover_url = os.path.join(base_url, 'discover')
