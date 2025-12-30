@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class HomePageLocators:
+class ProjectPageLocators:
     project_list_locator = [By.XPATH, "//span[text()='Projects']"]
     new_project_button = [By.XPATH, "//span[text()='New project']"]
     # 不要再次询问，只有第一次创建项目时才会出现此按钮

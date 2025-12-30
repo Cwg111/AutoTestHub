@@ -613,3 +613,22 @@ class BasePage:
             end=time.time()
             self.logger.info(f"在{page_action}操作，成功获取Shadow Root内的元素: {target_locator}，耗时{end-start}秒")
             return target_ele
+
+    def is_element_visible(self,locator, short_timeout=1, poll_frequency=0.5):
+        """
+        快速判断元素是否存在并可见
+        :param locator: 元素定位
+        :param short_timeout: 极短超时（避免偶发误判，建议1秒）
+        :param poll_frequency: 轮询频率
+        :return: bool - 存在且可见返回True，否则返回False
+        """
+        try:
+            WebDriverWait(self.driver, short_timeout, poll_frequency).until(
+                EC.visibility_of_element_located(locator)
+            )
+        except:
+            self.logger.debug(f"元素{locator}不存在，或存在但不可见")
+            return False
+        else:
+            self.logger.debug(f"元素{locator}存在且可见")
+            return True
