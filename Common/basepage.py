@@ -6,6 +6,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.common.exceptions import InvalidArgumentException
 
 
 class BasePage:
@@ -156,6 +157,8 @@ class BasePage:
             self.get_page_img(page_action)
             raise
         else:
+            # 给定位到的WebElement元素对象手动添加一个属性，方便日志记录
+            ele.locator=locator
             return ele
 
     def click_element(
@@ -280,28 +283,37 @@ class BasePage:
             raise
 
     def get_attribute(
-            self, locator, page_action, attr_name, timeout=20, poll_frequency=0.5
+            self, locator_or_ele, page_action, attr_name, timeout=20, poll_frequency=0.5
     ):
         """
-        获取元素属性
+        获取元素属性，兼容传入元素对象的情况
         等待方式为存在
-        :param locator: 元素定位
+        :param locator_or_ele: 元素定位或者已经定位好的元素对象
         :param page_action: 元素操作描述
         :param attr_name: 需要获取的属性名称
         :param timeout: 超时时间
         :param poll_frequency: 轮询频率
         :return:
         """
-        ele = self.get_element(
-            locator, page_action, timeout, poll_frequency, wait="visibility"
-        )
-        self.logger.info(f"在 {page_action} 操作，获取元素 {locator} 的属性")
+        if isinstance(locator_or_ele,list) and len(locator_or_ele)==2:
+            # 是列表且长度为2，判定为元素定位
+            ele = self.get_element(locator_or_ele,page_action,timeout,poll_frequency,wait="visibility")
+            locator_info = locator_or_ele # 日志显示定位器信息
+        # hasattr(object,name)是用来判断对象是否包含对应的属性或方法，返回布尔值
+        elif hasattr(locator_or_ele,"get_attribute"): # 如果是元素对象，那么它就有方法get_attribute
+            # 不是定位器，判定为已定位的元素对象
+            ele=locator_or_ele
+            # getattr(object,name,default)用来获取对象的某个属性或方法，如果没有，则返回default
+            locator_info = getattr(ele,'locator','已定位元素')
+        else:
+            raise InvalidArgumentException(f"参数必须是定位器列表（如[By.XPATH, 'xxx']）或WebElement对象")
+        self.logger.info(f"在 {page_action} 操作，获取元素 {locator_info} 的{attr_name}属性")
         try:
             value = ele.get_attribute(attr_name)
-            self.logger.info(f"元素：{locator} 的{attr_name}属性值：【{value}】 ")
+            self.logger.info(f"元素：{locator_info} 的{attr_name}属性值：【{value}】 ")
             return value
-        except:
-            self.logger.info("获取元素属性失败")
+        except Exception as e:
+            self.logger.error(f"获取元素 {locator_info} 的{attr_name}属性失败，异常信息：{str(e)}")
             raise
 
     def get_attributes(
@@ -407,6 +419,9 @@ class BasePage:
             self.get_page_img(page_action)
             raise
         else:
+            # 给定位到的WebElement元素对象列表中每一个都手动添加一个属性，方便日志记录
+            for ele in eles:
+                ele.locator = locator
             return eles
 
     def get_texts(self, locator, page_action, timeout=20, poll_frequency=0.5):
@@ -627,8 +642,8 @@ class BasePage:
                 EC.visibility_of_element_located(locator)
             )
         except:
-            self.logger.debug(f"元素{locator}不存在，或存在但不可见")
+            self.logger.info(f"元素{locator}不存在，或存在但不可见")
             return False
         else:
-            self.logger.debug(f"元素{locator}存在且可见")
+            self.logger.info(f"元素{locator}存在且可见")
             return True
