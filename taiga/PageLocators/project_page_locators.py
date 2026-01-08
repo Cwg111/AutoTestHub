@@ -27,11 +27,13 @@ class ProjectPageLocators:
     create_project_button = [By.XPATH, "//button[text()='Create Project']"]
     # 点击新建一个项目后项目列表中第一个项目（是根据创建时间从晚到早排序的，最新创建的在第一个），会定位到多个元素，只取第一个
     first_project_locator = [By.XPATH, "//a[@class='list-itemtype-project-image']//img"]
+    # 通过项目名称来定位到第一个项目，注意这只是一个模板，实际项目名会根据创建时间不同而不同
+    project_by_name_locator = [By.XPATH, "//a[@class='list-itemtype-project-image'][.//img[@alt='{project_name}']]"]
 
-    # 进入项目后左侧的导航栏都在shadow中，所以需要先定位到shadow元素
-    shadow_host=[By.XPATH,"//tg-legacy-loader"]
-    # 项目中的设置按钮
-    project_setting_button = [By.XPATH, ".//span[contains(text(),'Settings')]"]
+    # 进入项目后左侧的导航栏都在shadow容器中，所以需要先定位到shadow元素
+    shadow_host = [By.XPATH, "//tg-legacy-loader"]
+    # shadow容器中的标签为span的元素，必须用CSS定位，否则shadow_root.find_element会报错
+    project_setting_button = [By.CSS_SELECTOR, "a[title='Settings']"]
 
     # 项目中更改项目名输入框
     change_project_name_input = [By.XPATH, "//input[@id='project-name']"]
@@ -41,7 +43,6 @@ class ProjectPageLocators:
     delete_project_button = [By.XPATH, "//a[@class='delete-project']"]
     # 项目中删除项目确认按钮
     delete_project_confirm_button = [By.XPATH, "//span[contains(text(),'really sure')]"]
-
 
 
 if __name__ == "__main__":

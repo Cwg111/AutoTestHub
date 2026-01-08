@@ -185,6 +185,21 @@ class BasePage:
             self.get_page_img(page_action)
             raise
 
+    def click_existing_element(self,element,page_action):
+        """
+        点击已定位完成的元素对象（适配Shadow DOM等特殊场景）
+        :param element: 已经定位好的元素对象（如shadow_root内找到的元素）
+        :param page_action: 元素操作描述（用于日志和截图标注）
+        :return:
+        """
+        self.logger.info(f"在 {page_action} 操作，点击元素")
+        try:
+            element.click()
+        except:
+            self.logger.exception("点击元素失败！")
+            self.get_page_img(page_action)
+            raise
+
     def click_elements(
             self, locator, page_action, timeout=20, poll_frequency=0.5, wait="visibility"
     ):
@@ -585,16 +600,17 @@ class BasePage:
         self.logger.info(f"在 {page_action} 操作，上传文件：{file_path}")
 
     # shadow dom定位，能不能用还需要具体验证
-    def get_shadow_element(self, shadow_host_locator, target_locator, page_action, timeout=20, poll_frequency=0.5):
+    def get_shadow_element(self, shadow_host_locator, target_locator, page_action,timeout=20, poll_frequency=0.5):
         """
         查找Shadow DOM内的元素
         :param shadow_host_locator: Shadow Host的定位符（如[By.XPATH,"//tg-legacy-loader"]）
-        :param target_locator: Shadow Root内目标元素的定位符（如[By.XPATH, ".//span[contains(text(),'Settings')]"]）
+        :param target_locator: Shadow Root内目标元素标签的定位符，必须用CSS定位（如[By.CSS_SELECTOR, "a[title='Settings']"]）
         :param page_action: 元素操作描述（如"点击Settings按钮"）
         :param timeout: 超时时间
         :param poll_frequency: 轮询频率
         :return: ele,返回Shadow Root内查找到的目标元素
         """
+
         # 第一步先获取shadow host元素
         self.logger.info(f"在{page_action}操作，开始定位Shadow Host: {shadow_host_locator}")
         self.wait_page_contains_element(shadow_host_locator, page_action, timeout, poll_frequency)
@@ -618,11 +634,10 @@ class BasePage:
         self.logger.info(f"在{page_action}操作，开始定位Shadow Root内的元素: {target_locator}")
         start = time.time()
         try:
-            target_ele = WebDriverWait(self.driver, timeout, poll_frequency).until(
-                lambda driver: shadow_root.find_element(*target_locator))
+            target_ele=shadow_root.find_element(*target_locator)
         except:
             self.get_page_img("获取Shadow Root内的元素失败")
-            self.logger.error(page_action)
+            self.logger.error(f"在Shadow Root内定位{page_action}元素失败")
             raise
         else:
             end=time.time()
