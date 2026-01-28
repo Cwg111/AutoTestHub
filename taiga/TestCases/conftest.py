@@ -4,7 +4,7 @@ from Common.data import clear_img, clear_root, read_json_data
 from selenium import webdriver
 from Common.agent import options, driver_version
 from taiga.Common.taiga_log import logger
-from taiga.Common.taiga_path import *
+from taiga.Common.taiga_path import logs_dir,login_url,screenshot_dir,login_data_dir,home_url
 from taiga.PageObjects.login_page import LoginPage
 
 login_data = read_json_data(login_data_dir)

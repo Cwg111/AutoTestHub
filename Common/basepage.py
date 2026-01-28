@@ -321,7 +321,7 @@ class BasePage:
             # getattr(object,name,default)用来获取对象的某个属性或方法，如果没有，则返回default
             locator_info = getattr(ele,'locator','已定位元素')
         else:
-            raise InvalidArgumentException(f"参数必须是定位器列表（如[By.XPATH, 'xxx']）或WebElement对象")
+            raise InvalidArgumentException("参数必须是定位器列表（如[By.XPATH, 'xxx']）或WebElement对象")
         self.logger.info(f"在 {page_action} 操作，获取元素 {locator_info} 的{attr_name}属性")
         try:
             value = ele.get_attribute(attr_name)
@@ -352,8 +352,8 @@ class BasePage:
             self.logger.info(f"在 {page_action} 操作，获取多个 {value} 元素的属性")
             try:
                 value = value.get_attribute(attr_name)
-            except:
-                self.logger.info(f"元素{value}，获取文本值失败")
+            except Exception as e:
+                self.logger.error(f"元素{value}，获取属性{attr_name}失败，异常信息：{str(e)}")
             else:
                 values.append(value)
         self.logger.info(f"多个元素属性值为：{values}")
@@ -455,8 +455,8 @@ class BasePage:
             self.logger.info(f"在 {page_action} 操作，获取多个 {value} 元素的文本值")
             try:
                 txt = value.text
-            except:
-                self.logger.info(f"元素{value}，获取文本值失败")
+            except Exception as e:
+                self.logger.error(f"元素{value}，获取文本值失败，异常信息：{str(e)}")
             else:
                 values.append(txt)
         self.logger.info(f"多个元素文本值为：{values}")
@@ -599,7 +599,7 @@ class BasePage:
         ele.send_keys(file_path)
         self.logger.info(f"在 {page_action} 操作，上传文件：{file_path}")
 
-    # shadow dom定位，能不能用还需要具体验证
+    # shadow dom定位，能用
     def get_shadow_element(self, shadow_host_locator, target_locator, page_action,timeout=20, poll_frequency=0.5):
         """
         查找Shadow DOM内的元素
@@ -656,7 +656,7 @@ class BasePage:
             WebDriverWait(self.driver, short_timeout, poll_frequency).until(
                 EC.visibility_of_element_located(locator)
             )
-        except:
+        except Exception:
             self.logger.info(f"元素{locator}不存在，或存在但不可见")
             return False
         else:

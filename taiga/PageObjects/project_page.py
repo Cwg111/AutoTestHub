@@ -35,7 +35,7 @@ class ProjectPage(BasePage):
 
     def get_first_project_name(self) -> str:
         """
-        获取第一个项目名大，当前项目列表至少有一个项目
+        获取第一个项目名，当前项目列表至少有一个项目
         :return: str-第一个项目名
         """
         self.action_move_element(loc.project_list_locator, "项目列表入口")

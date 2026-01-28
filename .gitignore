@@ -16,6 +16,7 @@ __pycache__/
 **/Outputs/screenshots/**
 # 保留所有文件夹下的Outputs下的verify_code文件夹，仅忽略其内部内容
 **/Outputs/verify_code/**
+.vscode/
 
 # 可补充其他需要忽略的内容（比如日志文件、临时文件）
 *.log

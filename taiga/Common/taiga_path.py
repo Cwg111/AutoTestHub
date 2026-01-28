@@ -36,10 +36,10 @@ if __name__ == '__main__':
     print(screenshot_dir)
     print(discover_url)
     print(login_url)
-    from Common.data import read_json_data
+    # from Common.data import read_json_data
 
-    login_data = read_json_data(login_data_dir)
-    print(login_data)
-    print(login_data["login_success"])
-    print(login_data["login_fail"])
+    # login_data = read_json_data(login_data_dir)
+    # print(login_data)
+    # print(login_data["login_success"])
+    # print(login_data["login_fail"])
 

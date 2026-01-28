@@ -2,9 +2,9 @@ import pytest
 from taiga.PageLocators.login_page_locators import LoginPageLocators as loc
 from taiga.PageObjects.login_page import LoginPage
 from taiga.Common.taiga_log import logger
-from taiga.Common.taiga_path import *
+from taiga.Common.taiga_path import login_data_dir, screenshot_dir,discover_url,base_url
 from Common.data import read_json_data
-from time import sleep
+# from time import sleep
 
 
 class TestLogin:

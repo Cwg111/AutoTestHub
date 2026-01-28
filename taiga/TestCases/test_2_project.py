@@ -1,5 +1,5 @@
 import pytest
-from taiga.TestCases.conftest import login_page
+# from taiga.TestCases.conftest import login_page
 from taiga.PageObjects.project_page import ProjectPage
 from taiga.Common.taiga_log import logger
 from taiga.Common.taiga_path import screenshot_dir
