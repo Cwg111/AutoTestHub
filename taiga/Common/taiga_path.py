@@ -10,6 +10,7 @@ screenshot_dir = os.path.join(base_dir, "Outputs", "screenshots")
 verify_code_dir = os.path.join(base_dir, "Outputs", "verify_code")
 test_data_dir = os.path.join(base_dir, "TestDatas")  # 测试数据目录
 login_data_dir = os.path.join(test_data_dir, "login_datas.json")  # 登录数据文件
+member_data_dir = os.path.join(test_data_dir, "member_datas.json")  # 成员数据文件
 
 # 如果输出目录不存在，则创建
 list_dir = [reports_dir, logs_dir, screenshot_dir, verify_code_dir]

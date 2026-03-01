@@ -1,0 +1,13 @@
+{
+    "project_name": "测试专用项目",
+    "notexist_email": {
+        "email": "notexist@example.com",
+        "role": "Design",
+        "invite_text": "诚邀邮箱为notexist@example.com的先生/女士担任本项目的Design角色"
+    },
+    "exist_email": {
+        "email": "userB@test.com",
+        "role": "UX",
+        "invite_text": "诚邀邮箱为userB@test.com的先生/女士担任本项目的UX角色"
+    }
+}
