@@ -1,5 +1,4 @@
 import pytest
-# from taiga.TestCases.conftest import login_page
 from taiga.PageObjects.project_page import ProjectPage
 from taiga.Common.taiga_log import logger
 from taiga.Common.taiga_path import screenshot_dir
@@ -7,7 +6,7 @@ from taiga.Common.taiga_db import get_latest_project_name
 
 
 class TestProject:
-    project_page: ProjectPage = None
+    project_page: ProjectPage = None # type: ignore
     """
     首页的测试用例
     """

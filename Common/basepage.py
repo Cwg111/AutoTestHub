@@ -6,7 +6,9 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import InvalidArgumentException
+from selenium.webdriver.support.ui import Select
 
 
 class BasePage:
@@ -111,7 +113,7 @@ class BasePage:
         :param poll_frequency: 轮询频率
         :return:
         """
-        self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 存在。")
+        self.logger.info(f"在 {page_action} 操作，等待元素：{locator} 可点击。")
         try:
             start = time.time()
             WebDriverWait(self.driver, timeout, poll_frequency).until(
@@ -158,7 +160,7 @@ class BasePage:
             raise
         else:
             # 给定位到的WebElement元素对象手动添加一个属性，方便日志记录
-            ele.locator=locator
+            ele.locator = locator  # type: ignore
             return ele
 
     def click_element(
@@ -299,7 +301,7 @@ class BasePage:
 
     def get_attribute(
             self, locator_or_ele, page_action, attr_name, timeout=20, poll_frequency=0.5
-    ):
+    )->str:
         """
         获取元素属性，兼容传入元素对象的情况
         等待方式为存在
@@ -310,6 +312,7 @@ class BasePage:
         :param poll_frequency: 轮询频率
         :return:
         """
+        ele: WebElement
         if isinstance(locator_or_ele,list) and len(locator_or_ele)==2:
             # 是列表且长度为2，判定为元素定位
             ele = self.get_element(locator_or_ele,page_action,timeout,poll_frequency,wait="visibility")
@@ -317,14 +320,14 @@ class BasePage:
         # hasattr(object,name)是用来判断对象是否包含对应的属性或方法，返回布尔值
         elif hasattr(locator_or_ele,"get_attribute"): # 如果是元素对象，那么它就有方法get_attribute
             # 不是定位器，判定为已定位的元素对象
-            ele=locator_or_ele
+            ele=locator_or_ele # type: ignore
             # getattr(object,name,default)用来获取对象的某个属性或方法，如果没有，则返回default
             locator_info = getattr(ele,'locator','已定位元素')
         else:
             raise InvalidArgumentException("参数必须是定位器列表（如[By.XPATH, 'xxx']）或WebElement对象")
         self.logger.info(f"在 {page_action} 操作，获取元素 {locator_info} 的{attr_name}属性")
         try:
-            value = ele.get_attribute(attr_name)
+            value: str = ele.get_attribute(attr_name) # type: ignore
             self.logger.info(f"元素：{locator_info} 的{attr_name}属性值：【{value}】 ")
             return value
         except Exception as e:
@@ -436,7 +439,7 @@ class BasePage:
         else:
             # 给定位到的WebElement元素对象列表中每一个都手动添加一个属性，方便日志记录
             for ele in eles:
-                ele.locator = locator
+                ele.locator = locator  # type: ignore
             return eles
 
     def get_texts(self, locator, page_action, timeout=20, poll_frequency=0.5):
@@ -662,3 +665,21 @@ class BasePage:
         else:
             self.logger.info(f"元素{locator}存在且可见")
             return True
+    
+    def select_option_by_text(self, locator,  page_action,select_text):
+        """
+        选择select下拉列表中根据选项文本选择选项
+        :param locator: select元素定位
+        :param select_text: 选项文本
+        :param page_action: 元素操作描述
+        :return:
+        """
+        ele=self.get_element(locator, page_action)
+        self.logger.info(f"在{page_action}操作，选择下拉列表中选项：{select_text}")
+        try:
+            select_ele = Select(ele)
+            select_ele.select_by_visible_text(select_text)
+        except:
+            self.get_page_img("选择下拉列表中选项失败")
+            self.logger.error(f"在{page_action}操作，选择下拉列表中选项：{select_text}失败")
+            raise

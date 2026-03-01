@@ -16,13 +16,13 @@ def driver_version():
     # 获取本地chrom浏览器版本
     browser_version = get_browser_version_from_os("google-chrome")
     # 通过本地浏览器版本指定浏览器驱动版本
-    browser_driver = browser_version.split(".")[0] + "chromedriver.exe"
+    browser_driver = browser_version.split(".")[0] + "chromedriver.exe" # type: ignore
     if browser_driver in os.listdir(driver_dir):
         driver_path = os.path.join(driver_dir, browser_driver)
         print(f"当前Chrome浏览器驱动版本：{driver_path}")
         return driver_path
     else:
-        raise print(f"本地chrome驱动版本：{browser_version}，未找到指定的驱动版本！！！")
+        raise print(f"本地chrome驱动版本：{browser_version}，未找到指定的驱动版本！！！") # type: ignore
 
 
 def options():

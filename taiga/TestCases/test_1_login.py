@@ -2,13 +2,17 @@ import pytest
 from taiga.PageLocators.login_page_locators import LoginPageLocators as loc
 from taiga.PageObjects.login_page import LoginPage
 from taiga.Common.taiga_log import logger
-from taiga.Common.taiga_path import login_data_dir, screenshot_dir,discover_url,base_url
+from taiga.Common.taiga_path import (
+    login_data_dir,
+    screenshot_dir,
+    discover_url,
+    base_url,
+)
 from Common.data import read_json_data
-# from time import sleep
 
 
 class TestLogin:
-    login_page: LoginPage = None
+    login_page: LoginPage = None  # type: ignore
     login_data = read_json_data(login_data_dir)  # 读取登录数据
     admin_username = login_data["login_admin_success"]["username"]
     admin_password = login_data["login_admin_success"]["password"]
@@ -23,7 +27,6 @@ class TestLogin:
         :return:
         """
         self.login_page = LoginPage(logger, screenshot_dir, clean_login_state)
-
 
     @pytest.mark.parametrize("user_error", login_data["login_error_input"])
     def test_login_error(self, user_error):
@@ -56,7 +59,7 @@ class TestLogin:
         )
 
     def test_login_success(self):
-        self.login_page.login_and_assert(self.admin_username,self.admin_password)
+        self.login_page.login_and_assert(self.admin_username, self.admin_password)
         # 由于再登录成功后输入登录网址跳转不过去，所以必须登出
         self.login_page.logout()
         self.login_page.wait_page_url_change(base_url)

@@ -29,10 +29,12 @@ class ProjectPageLocators:
     first_project_locator = [By.XPATH, "//a[@class='list-itemtype-project-image']//img"]
     # 通过项目名称来定位到第一个项目，注意这只是一个模板，实际项目名会根据创建时间不同而不同
     project_by_name_locator = [By.XPATH, "//a[@class='list-itemtype-project-image'][.//img[@alt='{project_name}']]"]
+    # 测试专用项目
+    test_project_loctor = [By.XPATH, "//a[@class='list-itemtype-project-image'][.//img[@alt='测试专用项目']]"]
 
     # 进入项目后左侧的导航栏都在shadow容器中，所以需要先定位到shadow元素
     shadow_host = [By.XPATH, "//tg-legacy-loader"]
-    # shadow容器中的标签为span的元素，必须用CSS定位，否则shadow_root.find_element会报错
+    # shadow容器中的目标元素，推荐用CSS定位（Selenium对shadowRoot内XPath支持存在兼容性问题）
     project_setting_button = [By.CSS_SELECTOR, "a[title='Settings']"]
 
     # 项目中更改项目名输入框

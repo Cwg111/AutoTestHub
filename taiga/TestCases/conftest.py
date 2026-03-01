@@ -6,6 +6,7 @@ from Common.agent import options, driver_version
 from taiga.Common.taiga_log import logger
 from taiga.Common.taiga_path import logs_dir,login_url,screenshot_dir,login_data_dir,home_url
 from taiga.PageObjects.login_page import LoginPage
+from taiga.PageObjects.project_page import ProjectPage
 
 login_data = read_json_data(login_data_dir)
 default_username = login_data["login_admin_success"]["username"]
@@ -39,6 +40,15 @@ def login_page(init_taiga):
     logger.info("登录成功")
     yield init_taiga
 
+@pytest.fixture(scope="session")
+def enter_test_project(login_page):
+    """
+    复杂化login_page，多一个进入测试专用项目的设置界面的操作
+    """
+    project_page = ProjectPage(logger, screenshot_dir, login_page)
+    project_page.enter_test_project()
+    project_page.enter_project_settings()
+    yield login_page
 
 @pytest.fixture(scope="function")
 def clean_login_state(init_taiga):

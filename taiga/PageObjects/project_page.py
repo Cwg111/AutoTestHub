@@ -8,7 +8,7 @@ class ProjectPage(BasePage):
     项目列表页面元素操作类
     """
     # 把第一个项目名称单独抽出来作为类属性
-    first_project_name = None
+    first_project_name: str = ""
 
     def create_project(self) -> str:
         """
@@ -82,22 +82,32 @@ class ProjectPage(BasePage):
         self.action_move_element(target_project_locator, "项目入口")
         self.click_element(target_project_locator, "点击第一个项目")
 
+    def enter_test_project(self):
+        """
+        进入测试专用项目
+        """
+        # 先进入项目列表
+        self.action_move_element(loc.project_list_locator, "项目列表入口")
+        self.click_element(loc.view_all_projects_button, "查看所有项目按钮")
+        # 先把鼠标移动到项目入口再点击，否则会点击失败
+        self.action_move_element(loc.test_project_loctor, "测试专用项目入口")
+        self.click_element(loc.test_project_loctor, "点击测试专用项目")
+
     def enter_project_settings(self):
         """
         进入项目设置
         """
-        # 这一步已经获取到项目名了
-        self.enter_first_project()
         # 获取项目设置按钮
         setting_ele = self.get_shadow_element(loc.shadow_host, loc.project_setting_button, "项目设置按钮")
         # 点击已定位到的设置按钮
         self.click_existing_element(setting_ele, "项目设置按钮")
 
-
     def update_project_name(self):
         """
         更新项目名
         """
+        # 这一步已经获取到项目名了
+        self.enter_first_project()
         # 先进入项目设置
         self.enter_project_settings()
         new_project_name=self.first_project_name + "_new"
@@ -105,6 +115,8 @@ class ProjectPage(BasePage):
         self.click_element(loc.change_project_save_button, "保存项目名按钮")
 
     def delete_first_project(self):
+        # 这一步已经获取到项目名了
+        self.enter_first_project()
         # 先进入项目设置
         self.enter_project_settings()
         self.click_element(loc.delete_project_button, "删除项目按钮")
