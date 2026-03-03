@@ -35,11 +35,10 @@ def run_tests_and_generate_report(test_dir):
     # 运行测试
     pytest.main([test_dir, "-v", f"--alluredir={allure_results_dir}"])
 
-    # 生成报告
-    os.system(f"allure generate {allure_results_dir} -o {report_dir}")
-
-    # 只在非 Jenkins 环境下打开报告
+    # 只在非 Jenkins 环境下生成和打开报告
     if not is_jenkins():
+        # 生成报告
+        os.system(f"allure generate {allure_results_dir} -o {report_dir}")
         os.system(f"allure open {report_dir}")
     else:
         print("Jenkins 环境：报告已生成，请使用 Jenkins Allure 插件查看")

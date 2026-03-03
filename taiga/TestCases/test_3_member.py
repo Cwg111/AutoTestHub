@@ -1,4 +1,5 @@
 import pytest
+from time import sleep
 from taiga.PageObjects.member_page import MemberPage
 from taiga.Common.taiga_path import screenshot_dir
 from taiga.Common.taiga_log import logger
@@ -69,7 +70,8 @@ class TestMember:
             self.exist_email["role"],
             self.exist_email["invite_text"],
         )
-        self.member_page.refresh_page()
+        # self.member_page.refresh_page()
+        sleep(1)
         new_member_count = self.member_page.get_member_count()
         new_member_count_db = get_project_member_count(self.project_name)
 
