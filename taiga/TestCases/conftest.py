@@ -2,7 +2,7 @@ import pytest
 from selenium.webdriver.chrome.service import Service
 from Common.data import clear_img, clear_root, read_json_data
 from selenium import webdriver
-from Common.agent import options, driver_version
+from Common.agent import options, get_chrome_driver
 from taiga.Common.taiga_log import logger
 from taiga.Common.taiga_path import logs_dir,login_url,screenshot_dir,login_data_dir,home_url
 from taiga.PageObjects.login_page import LoginPage
@@ -18,7 +18,7 @@ default_password = login_data["login_admin_success"]["password"]
 def init_taiga():
     clear_root(logs_dir)
     clear_img(screenshot_dir)
-    servers = Service(executable_path=driver_version())
+    servers = Service(executable_path=get_chrome_driver())
     driver = webdriver.Chrome(options=options(), service=servers)
     driver.maximize_window()
     driver.get(login_url)

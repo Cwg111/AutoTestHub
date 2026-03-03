@@ -4,6 +4,6 @@ pywinauto~=0.6.9
 PyMySQL~=1.1.1
 psycopg2~=2.9.10
 ddddocr~=1.5.6
-webdriver-manager~=3.8.6 # 这个库安装这个版本，升到4.0会报错
+webdriver-manager~=4.0.2
 allure-pytest~=2.15.3
 pytest-rerunfailures~=16.1

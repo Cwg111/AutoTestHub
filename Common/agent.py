@@ -1,28 +1,31 @@
 import os
-from webdriver_manager.core.utils import get_browser_version_from_os
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.driver_cache import DriverCacheManager
+
 from Common.path import driver_dir, export_dir
 
 """
 Chrome浏览器驱动配置
 """
 
+def get_chrome_driver():
+    """
+    自动匹配Chrome版本，下载驱动到指定的 driver_dir（Conf/chromedriver）
+    :return: chromedriver 可执行文件的绝对路径
+    """
+    # 1. 先确保指定的驱动目录存在，不存在就自动创建（避免报错）
+    os.makedirs(driver_dir, exist_ok=True)
 
-def driver_version():
-    """
-    匹配当前chrome驱动版本
-    :return:
-    """
-    # 获取本地chrom浏览器版本
-    browser_version = get_browser_version_from_os("google-chrome")
-    # 通过本地浏览器版本指定浏览器驱动版本
-    browser_driver = browser_version.split(".")[0] + "chromedriver.exe" # type: ignore
-    if browser_driver in os.listdir(driver_dir):
-        driver_path = os.path.join(driver_dir, browser_driver)
-        print(f"当前Chrome浏览器驱动版本：{driver_path}")
-        return driver_path
-    else:
-        raise print(f"本地chrome驱动版本：{browser_version}，未找到指定的驱动版本！！！") # type: ignore
+    # 2. 初始化驱动管理器，【核心】通过 cache_manager 参数指定下载目录
+    cache_manager = DriverCacheManager(driver_dir)
+    driver_manager = ChromeDriverManager(cache_manager=cache_manager)
+
+    # 3. 自动执行：检测Chrome版本 → 检查目录里是否已有对应驱动 → 没有就下载 → 有就直接用
+    driver_path = driver_manager.install()
+
+    print(f"✅ Chrome驱动已匹配/下载到指定目录：{driver_path}")
+    return driver_path
 
 
 def options():
@@ -48,4 +51,5 @@ def options():
 
 
 if __name__ == '__main__':
-    print(driver_version())
+    # print(driver_version())
+    print(get_chrome_driver())
