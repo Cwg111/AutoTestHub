@@ -1,3 +1,5 @@
+# 这里导入 utils.root_path 是为了确保项目根目录被添加到 sys.path，不用显示调用root_path
+import utils.root_path # noqa: F401
 import pytest
 import os
 import shutil

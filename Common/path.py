@@ -1,6 +1,7 @@
 import os
+from utils.root_path import get_project_root
 
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+base_dir = get_project_root()
 # 浏览器驱动路径
 driver_dir = os.path.join(base_dir, "Conf", "chromedriver")
 # 当前项目配置文件路径
@@ -13,7 +14,8 @@ for dir_path in list__dir:
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(base_dir)
     print(driver_dir)
     print(export_dir)
