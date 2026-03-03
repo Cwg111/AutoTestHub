@@ -69,6 +69,7 @@ class TestMember:
             self.exist_email["role"],
             self.exist_email["invite_text"],
         )
+        self.member_page.refresh_page()
         new_member_count = self.member_page.get_member_count()
         new_member_count_db = get_project_member_count(self.project_name)
 
