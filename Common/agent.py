@@ -1,9 +1,40 @@
 import os
 from selenium import webdriver
+import requests
+from webdriver_manager.core.http import HttpClient
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.download_manager import WDMDownloadManager
 from webdriver_manager.core.driver_cache import DriverCacheManager
+from webdriver_manager.core.logger import log
 
 from Common.path import driver_dir, export_dir
+
+# ------------------- 自定义 HTTP 客户端 -------------------
+class TaobaoMirrorHttpClient(HttpClient):
+    """
+    自定义 HTTP 客户端，将谷歌官方下载地址替换为国内淘宝镜像
+    """
+    def get(self, url, params=None, **kwargs):
+        # 打印日志，方便调试
+        log(f"原始下载地址: {url}")
+        
+        # 【关键】将谷歌官方地址替换为淘宝镜像地址
+        # webdriver-manager 4.x 默认使用 chrome-for-testing 地址
+        if "storage.googleapis.com/chrome-for-testing-public" in url:
+            url = url.replace(
+                "https://storage.googleapis.com/chrome-for-testing-public",
+                "https://npmmirror.com/mirrors/chrome-for-testing"
+            )
+        # 兼容旧版的 chromedriver 地址（备用）
+        elif "chromedriver.storage.googleapis.com" in url:
+            url = url.replace(
+                "https://chromedriver.storage.googleapis.com",
+                "https://npmmirror.com/mirrors/chromedriver"
+            )
+            
+        log(f"使用国内镜像下载: {url}")
+        # 发起真实请求
+        return requests.get(url, params=params, **kwargs)
 
 """
 Chrome浏览器驱动配置
@@ -19,7 +50,9 @@ def get_chrome_driver():
 
     # 2. 初始化驱动管理器，【核心】通过 cache_manager 参数指定下载目录
     cache_manager = DriverCacheManager(driver_dir)
-    driver_manager = ChromeDriverManager(cache_manager=cache_manager)
+    # driver_manager = ChromeDriverManager(cache_manager=cache_manager)
+    download_manager = WDMDownloadManager(http_client=TaobaoMirrorHttpClient())
+    driver_manager = ChromeDriverManager(cache_manager=cache_manager, download_manager=download_manager)
 
     # 3. 自动执行：检测Chrome版本 → 检查目录里是否已有对应驱动 → 没有就下载 → 有就直接用
     driver_path = driver_manager.install()
