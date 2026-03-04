@@ -53,7 +53,7 @@ def check_download_file(file_name):
     try:
         print(f"校验的文件名称：{file_name}")
         assert file_name in os.listdir(export_dir)[0]
-    except:
+    except AssertionError:
         return False
     else:
         return True
