@@ -46,18 +46,5 @@ def run_tests_and_generate_report(test_dir):
         print("Jenkins 环境：报告已生成，请使用 Jenkins Allure 插件查看")
 
 if __name__ == "__main__":
-    # print("1. 运行测试并生成报告")
-    # print("2. 查看上一次的报告")
-    
-    # choice = input("请选择 (1/2): ").strip()
-    
-    # if choice == "1":
-    #     run_tests_and_generate_report(taiga_base_dir)
-    # elif choice == "2":
-    #     view_last_report()
-    # else:
-    #     print("无效的选项")
     # 运行并查看报告
     run_tests_and_generate_report(taiga_base_dir)
-    # # # 查看最近一次运行的报告
-    # # view_last_report()
